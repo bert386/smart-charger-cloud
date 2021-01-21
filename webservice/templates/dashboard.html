@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OpenEvse Controller Dashboard v1.0</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/static/css/style.css" rel="stylesheet">
+    <style>
+    
+    </style>
+</head>
+
+<body>
+    <!--div id="wrapper">
+    
+<div class="row">
+
+        <div class="col-lg-12">
+        <div class="ibox float-e-margins"!-->
+        <div  id='map_head'><div>You have to login in order to enter main page.<a href='/login'><i class="fa fa-sign-in"></i>login</a></div></div>
+        <div id="googleMap" style="width:100%;height:100%;"></div>
+        <!--div class="ibox-title">
+            <h5>{{ user_id }}</h5>
+            <div class="ibox-tools">
+
+                <a href="/logout">
+                    <i class="fa fa-sign-out"></i>Log out
+                </a>
+
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-wrench"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="#">Config option 1</a>
+                    </li>
+                    <li><a href="#">Config option 2</a>
+                    </li>
+                </ul>
+                <a class="close-link">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div!-->
+        <!--div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+
+                        <th>#</th>
+                        <th>Shadow Name </th>
+                        <th>Working Status</th>
+                        <th>On/Off Line </th>
+                        <th>Location </th>
+                        <th>Checked </th>
+                        <th>unknow </th>
+                    </tr>
+                    </thead>
+                    <tbody id="info_list">
+                    <tr>
+                        <!--
+                        <td>1</td>
+                        <td>test02</td>
+                        <td><div id="test02" style="font-size: 20px; line-height:30px"  onclick="sendEvent(this)"><svg height="30" width="30" style="vertical-align: sub;">
+							<circle cx="12" cy="15" r="10" stroke="black" stroke-width="1" fill="red" /></svg></div>
+						</td>
+                        <td>available</td>
+                        <td>Inceptos Hymenaeos Ltd</td>
+                        <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
+                        -->
+                    <!--/tr>
+                    </tbody>
+                </table>
+            </div!-->
+
+        <!--/div>
+        </div>
+        </div>
+
+        </div!-->
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script type="text/javascript" src="/static/js/socket.io.min.js"></script>
+	<script src="/static/js/action.js"></script>
+    
+    <script>
+      var lastOpenInfoWin = null; 
+      function initMap(jsondata) 
+      {
+        var map_array = JSON.parse(jsondata);
+        
+        var map = new google.maps.Map(document.getElementById('googleMap'), 
+        {
+            zoom: 12,
+            center: {lat: 40.730610 , lng: -73.935242}
+        });
+        map_array.forEach(function(item, idx)
+        { 
+            var uluru = {lat: item.latitude, lng: item.longitude};
+            
+            var image ='./static/images/ChargerIcon.png';
+            var marker = new google.maps.Marker
+            ({
+              position: uluru,
+              map: map,
+              icon: image
+            });
+            createInfoWindow(marker, item.sitename,item.supply,item.stations);
+        });
+      }
+      function createInfoWindow(marker, sitename,maxpower,stations)
+      {
+
+          //create an infowindow for this marker
+          var content='<div id="iw-container">' +'<div class="iw-title">Sitename:'+sitename+'</div>' ;
+          content +='<div class="iw-title-2">Maxpower:'+maxpower+'</div>' ;
+          stations.forEach(function(item, idx)
+          {
+                content +='<div class="iw-content">';
+                content +='<div class="iw-subTitle" style="padding-top:0px;"> stationname:'+item.shadowName+'</div>';
+                if(item.iotConnected ==true)
+                {    
+                    content +='<div class="iw-space">Power On</div>';
+                    if(item.station_state =='0')
+                    {
+                       content +='<div class="iw-space">UnKnown</div>';                             
+                    }
+                    else if(item.station_state =='1')
+                    {
+                        content +='<div class="iw-space">Vehicle is not connected (Idle)</div>';    
+
+                    }
+                    else if(item.station_state =='2')
+                    {
+                        content +='<div class="iw-space">vehicle is connected(charging ready)</div>';
+                        
+                    }
+                    else if(item.station_state =='3')
+                    {
+
+                        content +='<div class="iw-space">vehicle is charging</div>';
+                    }
+                    else
+                    {
+                        content +='<div class="iw-space">vehicle charging is completed, vent required</div>';    
+                    }
+                }
+                else
+                {
+                    content +='<div class="iw-space">Power Off</div>';
+
+                }
+                content +='</div>';
+
+          });      
+          content += '</div>';
+          var infowindow = new google.maps.InfoWindow({
+              content: content,
+              maxWidth: 350
+          });
+
+          //open infowindo on click event on marker.
+          google.maps.event.addListener(marker, 'mouseover', function () {
+              if (lastOpenInfoWin) lastOpenInfoWin.close();
+              lastOpenInfoWin = infowindow;
+              infowindow.open(marker.get('map'), marker);
+          });
+          google.maps.event.addListener(marker, 'mouseout', function () {
+              if (lastOpenInfoWin) lastOpenInfoWin.close();
+              //lastOpenInfoWin = infowindow;
+              //infowindow.open(marker.get('map'), marker);
+          });
+
+          google.maps.event.addListener(infowindow, 'domready', function()
+          {
+               
+          });
+
+      }
+
+
+      
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB17SrEA3sp1_K92aCR8ReZcqwLjwv7bo"></script>
+    <!--script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script!-->
+</body>
+</html>

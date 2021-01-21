@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OpenEvse Control System Login</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/static/css/animate.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="login-wrap">
+        <div align="center">
+            <h1 class="logo-name">OpenEvse</h1>
+        </div>
+
+        <div class="middle-box text-center loginscreen animated fadeInDown">
+            <div>
+                <h3>Welcome to OpenEvse Control System</h3>
+                <form class="m-t" role="form" action="" method="POST">
+                    <div class="err_msg">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Username or Email" name="usermail" required="">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" name="password" required="">
+                    </div>
+                    <button class="btn btn-primary block full-width m-b">Login</button>
+
+                    <a href="#"><small>Forgot password?</small></a>
+                    <!--p class="text-muted text-center"><small>Do not have an account?</small></p>
+                    <a class="btn btn-sm btn-white btn-block" href="/register">Create an account</a!-->
+                </form>
+                <p class="m-t"> <small>Electric Vehicle Management System, Tomos.LLC, 2017</small> </p>
+            </div>
+        </div>
+
+        <!-- Mainly scripts -->
+        <script src="/static/js/jquery-3.1.1.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            
+            $('button').click(function(event) 
+            {
+                event.preventDefault();
+                $.ajax
+                ({
+                    url: '/login',
+                    data: $('form').serialize(),
+                    type: 'POST',
+                    success: function(response)
+                    {
+                        if(response ===null)
+                           $('.err_msg').text('Username or Password is invalid');     
+                        else
+                            window.location.href='/maindash';
+                    },
+                    error: function(error) 
+                    {
+                        console.log(error);
+                    }
+                });
+            });
+            
+        </script>
+    
+</body>
+
+</html>

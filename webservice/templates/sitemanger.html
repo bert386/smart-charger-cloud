@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OpenEvse | Main view</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/static/css/animate.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <link href="/static/css/plugins/footable/footable.core.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+							<span>
+                            <img alt="image" class="img-circle" src="./static/images/mark.png" />
+                             </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ username }}</strong>
+                             </span> <span class="text-muted text-xs block">{{ username }} <b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="#">Logout</a></li>
+                            </ul>
+                    </div>
+                    <div class="logo-element">
+                        IN+
+                    </div>
+                </li>
+                <li>
+                    <a href="/maindash"><i class="fa fa-th-large"></i> <span class="nav-label">Site Control</span></a>
+                </li>
+                <li class="active">
+                    <a href="/sitemanger"><i class="fa fa-dashboard"></i> <span class="nav-label">Site Management</span> </a>
+                </li>
+                <li>
+                    <a href="/usermanager"><i class="fa fa-user"></i> <span class="nav-label">User Management</span> </a>
+                </li>
+                <li>
+                    <a href="/evenlogview"><i class="fa fa-calendar"></i> <span class="nav-label">Event Logging</span> </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <form role="search" class="navbar-form-custom" method="post" action="#">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <a href="/logout">
+                            <i class="fa fa-sign-out"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="m-t-lg">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Site Management</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ibox-content">
+                                <button class="btn btn-primary pull-left" id='add_site'><strong>Add Site</strong></button>
+                                   
+                                <table class="table table-hover" id='site'>
+                                    <thead>
+                                    <tr>
+                                        <th>Site Name</th>
+                                        <th>longitude</th>
+                                        <th>latitude</th>
+                                        <th>***</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="lightbox_bg"></div>
+
+                <div class="lightbox_container">
+                  <div class="lightbox_close"></div>
+                  <div class="lightbox_content">
+                    
+                    <h2>Add Site</h2>
+                    <form class="form add" id="form_company" data-id="" novalidate>
+                      <div class="input_container">
+                        <label for="company_name">Site Name: <span class="required">*</span></label>
+                        <div class="field_container">
+                          <input type="text" class="text" name="sitename" id="sitename" value="" required>
+                        </div>
+                      </div>
+                      <div class="input_container">
+                        <label for="industries">longitude: <span class="required">*</span></label>
+                        <div class="field_container">
+                          <input type="number" class="text" name="longitude" id="longitude" value="" required>
+                        </div>
+                      </div>
+                      <div class="input_container">
+                        <label for="revenue">latitude: <span class="required">*</span></label>
+                        <div class="field_container">
+                          <input type="number" class="text" name="latitude" id="latitude" value="" required>
+                        </div>
+                      </div>
+                      <div class="button_container">
+                        <button type="submit" class='btn btn-primary'>Add Site</button>
+                      </div>
+                    </form>
+                    
+                  </div>
+                </div>
+
+                <noscript id="noscript_container">
+                  <div id="noscript" class="error">
+                    <p>JavaScript support is needed to use this page.</p>
+                  </div>
+                </noscript>
+
+                <div id="message_container">
+                  <div id="message" class="success">
+                    <p>This is a success message.</p>
+                  </div>
+                </div>
+
+                <div id="loading_container">
+                  <div id="loading_container2">
+                    <div id="loading_container3">
+                      <div id="loading_container4">
+                        Loading, please wait...
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong>Electric Vehicle Management System, Tomos.LLC, 2017
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="/static/js/jquery-3.1.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="/static/js/inspinia.js"></script>
+<script src="/static/js/plugins/pace/pace.min.js"></script>
+<script charset="utf-8" src="//cdn.jsdelivr.net/jquery.validation/1.13.1/jquery.validate.min.js"></script>
+
+<script src="/static/js/plugins/toastr/toastr.min.js"></script>
+<script type="text/javascript" src="/static/js/socket.io.min.js"></script>
+
+<script src="/static/js/siteaction.js"></script>
+<script>
+function SiteLoadData(jsondata)
+{   
+    var html_text='';
+    var site_array = JSON.parse(jsondata);
+    site_array.forEach(function(item, idx)
+    {
+         
+        html_text +='<tr><td><i class="fa fa-angle-down"></i> '+item.sitename+'</td><td>'+item.latitude+'</td><td>'+item.longitude+'</td>';
+        html_text +='<td class="function_buttons">';
+        html_text += '<a data-name="' + item.sitename + '" class="btn btn-primary" id="function_add">Add Station</a>  ';
+        html_text += '<a data-name="' + item.sitename + '" class="btn btn-danger" id="function_delete">Delete Site</a>';
+        html_text += '</td></tr>';
+
+        item.stations.forEach(function(item_it, idx)
+        {
+            html_text +='<tr class="footable-row-detail" style=""><td class="footable-row-detail-cell" colspan="3"><div class="footable-row-detail-inner"><div class="footable-row-detail-row"><div class="footable-row-detail-name">station:</div><div class="footable-row-detail-value">'+item_it.shadowName+'</div></div><div class="footable-row-detail-row"><div class="footable-row-detail-name">serialNumber:</div><div class="footable-row-detail-value">'+item_it.serialNumber+'</div></div></div></td><td class="function_buttons"><a data-name="' + item_it.shadowName + '" data-id="' + item.sitename + '" class="btn btn-danger" id="function_delete_station">Delete Station</a></td></tr>';
+        });
+    });
+    $('#site tbody').html(html_text);
+
+}   
+</script>
+</body>
+
+</html>
